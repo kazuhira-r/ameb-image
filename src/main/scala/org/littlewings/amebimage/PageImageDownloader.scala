@@ -1,9 +1,9 @@
 package org.littlewings.amebimage
 
-import resource._
-
 import java.io.BufferedOutputStream
 import java.nio.file.{Files, Paths, StandardOpenOption}
+
+import resource._
 
 import org.slf4j.LoggerFactory
 
@@ -13,7 +13,7 @@ class PageImageDownloader(outputDir: String) {
       .select(pageUrlAsString, ".detailOn img")
       .map(_.attr("src"))
       .foreach { url =>
-        managed(HttpJsoupResource.downloadAsStream(url)).foreach { is =>
+        HttpJsoupResource.downloadAsStream(url) { is =>
           AmebloUrlRepository.extractRelativeImagePath(url).foreach { imagePath =>
             val logger = LoggerFactory.getLogger(getClass)
 

@@ -4,6 +4,8 @@ import scala.collection.JavaConverters._
 
 import java.io.InputStream
 
+import resource._
+
 import dispatch._
 import dispatch.Defaults._
 
@@ -35,8 +37,12 @@ object HttpJsoupResource {
     document.select(selector).asScala
   }
 
-  def downloadAsStream(urlAsString: String): InputStream =
+  def downloadAsStream[T](urlAsString: String)(fun: InputStream => T): T =
     executeHttp(urlAsString) { (request, http) =>
-      http.apply(request OK ToInputStream).apply()
+      val r =
+        for (is <- managed(http.apply(request OK AsInputStream).apply()))
+          yield fun(is)
+
+      r.acquireAndGet(identity)
     }
 }

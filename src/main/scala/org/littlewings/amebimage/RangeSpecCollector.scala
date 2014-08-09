@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import scopt.OptionParser
 
-import org.slf4j.LoggerFactory
+import org.apache.logging.log4j.LogManager
 
 object RangeSpecCollector {
   val SLEEP_TIME_UNIT: TimeUnit = TimeUnit.SECONDS
@@ -26,13 +26,13 @@ object RangeSpecCollector {
           sys.exit(1)
         }
 
-    val logger = LoggerFactory.getLogger(getClass)
+    val logger = LogManager.getLogger(getClass)
 
     logger.info("アメーバID = {}", option.amebaId)
     logger.info("出力先ディレクトリ = {}", option.outputDir)
-    logger.info("開始インデックス = {}", option.startIndex)
-    logger.info("終了インデックス = {}", option.endIndex)
-    logger.info("スリープ秒数 = {}秒", option.sleepTime)
+    logger.info("開始インデックス = {}", Int.box(option.startIndex))
+    logger.info("終了インデックス = {}", Int.box(option.endIndex))
+    logger.info("スリープ秒数 = {}秒", Long.box(option.sleepTime))
 
     val entryListScanner = new EntryListScanner(option.amebaId)
     val pageImageDownloader = new PageImageDownloader(option.outputDir)
@@ -40,7 +40,7 @@ object RangeSpecCollector {
     (option.startIndex to option.endIndex).foreach { index =>
       val entryRange = entryListScanner.scan(index)
 
-      logger.info("entrylist-{}内のページ数 = {}", index, entryRange.size)
+      logger.info("entrylist-{}内のページ数 = {}", Int.box(index), Int.box(entryRange.size))
 
       entryRange.foreach { pageUrl =>
         logger.info("アクセス対象のページ[{}]", pageUrl)

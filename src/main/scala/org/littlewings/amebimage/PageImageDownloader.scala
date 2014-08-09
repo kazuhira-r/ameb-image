@@ -5,7 +5,7 @@ import java.nio.file.{Files, Paths, StandardOpenOption}
 
 import resource._
 
-import org.slf4j.LoggerFactory
+import org.apache.logging.log4j.LogManager
 
 class PageImageDownloader(outputDir: String) {
   def execute(pageUrlAsString: String): Unit = {
@@ -15,7 +15,7 @@ class PageImageDownloader(outputDir: String) {
       .foreach { url =>
         HttpJsoupResource.downloadAsStream(url) { is =>
           AmebloUrlRepository.extractRelativeImagePath(url).foreach { imagePath =>
-            val logger = LoggerFactory.getLogger(getClass)
+            val logger = LogManager.getLogger(getClass)
 
             val savePath = Paths.get(s"$outputDir/$imagePath")
             val parent = savePath.getParent

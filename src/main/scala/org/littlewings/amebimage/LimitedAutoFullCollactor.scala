@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import scopt.OptionParser
 
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 
 object LimitedAutoFullCollector {
   val SLEEP_TIME_UNIT: TimeUnit = TimeUnit.SECONDS
@@ -26,23 +26,23 @@ object LimitedAutoFullCollector {
           sys.exit(1)
         }
 
-    val logger = LogManager.getLogger(getClass)
+    val logger = LoggerFactory.getLogger(getClass)
 
     logger.info("アメーバID = {}", option.amebaId)
     logger.info("出力先ディレクトリ = {}", option.outputDir)
-    logger.info("スリープ秒数 = {}秒", Long.box(option.sleepTime))
+    logger.info("スリープ秒数 = {}秒", option.sleepTime)
 
     val entryListScanner = new EntryListScanner(option.amebaId)
     val pageImageDownloader = new PageImageDownloader(option.outputDir)
 
     val indexRange = entryListScanner.scan
 
-    logger.info("アクセス対象の一覧ページ数（entrylist）= {}", Int.box(indexRange.size))
+    logger.info("アクセス対象の一覧ページ数（entrylist）= {}", indexRange.size)
 
     indexRange.foreach { index =>
       val entryRange = entryListScanner.scan(index)
 
-      logger.info("entrylist-{}内のページ数 = {}", Int.box(index), Int.box(entryRange.size))
+      logger.info("entrylist-{}内のページ数 = {}", index, entryRange.size)
 
       entryRange.foreach { pageUrl =>
         logger.info("アクセス対象のページ[{}]", pageUrl)

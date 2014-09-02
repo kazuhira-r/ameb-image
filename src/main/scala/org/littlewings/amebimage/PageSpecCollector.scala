@@ -4,7 +4,7 @@ import java.util.concurrent.TimeUnit
 
 import scopt.OptionParser
 
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 
 object PageSpecCollector {
   val SLEEP_TIME_UNIT: TimeUnit = TimeUnit.SECONDS
@@ -21,7 +21,7 @@ object PageSpecCollector {
           sys.exit(1)
         }
 
-    val logger = LogManager.getLogger(getClass)
+    val logger = LoggerFactory.getLogger(getClass)
 
     logger.info("出力先ディレクトリ = {}", option.outputDir)
     logger.info("ダウンロード対象のページのURL = {}", option.pageUrl)

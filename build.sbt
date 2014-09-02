@@ -1,6 +1,6 @@
 name := "ameb-image"
 
-version := "0.1.2"
+version := "0.1.3"
 
 scalaVersion := "2.11.2"
 
@@ -12,13 +12,10 @@ incOptions := incOptions.value.withNameHashing(true)
 
 resolvers += Resolver.sonatypeRepo("public")
 
-val log4j2Version = "2.0.1"
-
 libraryDependencies ++= Seq(
   "net.databinder.dispatch" %% "dispatch-jsoup" % "0.11.2",
   "com.jsuereth" %% "scala-arm" % "1.4",
   "com.github.scopt" %% "scopt" % "3.2.0",
-  "org.apache.logging.log4j" % "log4j-api" % log4j2Version,
-  "org.apache.logging.log4j" % "log4j-core" % log4j2Version,
-  "org.apache.logging.log4j" % "log4j-slf4j-impl" % log4j2Version
+  "org.slf4j" % "slf4j-api" % "1.7.7",
+  "ch.qos.logback" % "logback-classic" % "1.1.2"
 )

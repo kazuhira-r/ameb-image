@@ -1,8 +1,8 @@
 name := "ameb-image"
 
-version := "0.1.3"
+version := "0.1.4"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.11.3"
 
 organization := "org.littlewings"
 
